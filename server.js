@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const userRouter = require("./src/routes/authRoutes");
-const quizRouter = require("./src/routes/quizRoutes");
-const connectDB = require("./src/db/connectDB")
-require('dotenv').config()
+const userRouter = require("../src/routes/authRoutes");
+const quizRouter = require("../src/routes/quizRoutes");
+const connectDB = require("../src/db/connectDB");
+require('dotenv').config();
 
 const app = express();
 
@@ -12,18 +12,15 @@ app.use(cors());
 
 connectDB();
 
-
-//user routes
+// User routes
 app.use("/user", userRouter);
 
+// Quiz routes
+app.use("/quiz", quizRouter);
 
-//Quiz routes
-app.use("/quiz",quizRouter);
-
-app.get("/",(req,res) => {
+app.get("/", (req, res) => {
   return res.send("PlayPower Lab Welcomes you :)");
 });
 
-app.listen(5000, () => {
-  console.log("Listening at port 5000!");
-});
+// Export the app as a serverless function
+module.exports = app;

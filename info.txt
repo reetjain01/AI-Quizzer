@@ -1,0 +1,1 @@
+API key for groq = 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

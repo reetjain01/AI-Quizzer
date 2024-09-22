@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:16
+FROM node:20
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expose the port that your application will run on
-EXPOSE 3000
+EXPOSE 5000
 
 # Define the command to run your application
 CMD ["node", "server.js"]

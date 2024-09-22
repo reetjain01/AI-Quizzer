@@ -5,7 +5,9 @@ const Submission = require('../models/Submission');
 
 // User registration
 const register = async (req, res) => {
-  const { userName, password, email } = req.body; // Change username to userName
+  const { userName, password, email } = req.body;
+
+  console.log('Incoming request body:', req.body); // Log the request body to debug
 
   try {
     if (!userName || !password || !email) {
@@ -21,6 +23,7 @@ const register = async (req, res) => {
     return res.status(500).json({ message: 'Server error during registration', error });
   }
 };
+
 
 // User login
 const login = async (req, res) => {

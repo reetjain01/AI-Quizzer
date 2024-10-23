@@ -1,12 +1,14 @@
 const Groq = require("groq-sdk");
 const Submission = require("../models/Submission");
-const Quiz = require("../models/Quiz")
-const Question = require("../models/Question")
+const Quiz = require("../models/Quiz");
+const Question = require("../models/Question");
+
+const NodeCache = require("node-cache");
+const questionCache = new NodeCache({ stdTTL: 600, checkperiod: 120 });
 
 const groq = new Groq({
   apiKey: "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",
 });
-
 
 // Generate a quiz using AI
 const generateQuiz = async (req, res) => {
@@ -54,11 +56,16 @@ const generateQuiz = async (req, res) => {
     console.log("Generated Quiz Response:", generatedQuiz);
 
     // Ensure the response is parsed correctly
-    const quizData = typeof generatedQuiz === 'string' ? JSON.parse(generatedQuiz) : generatedQuiz;
+    const quizData =
+      typeof generatedQuiz === "string"
+        ? JSON.parse(generatedQuiz)
+        : generatedQuiz;
 
     // Check if questions are defined and an array
     if (!quizData.questions || !Array.isArray(quizData.questions)) {
-      return res.status(500).json({ message: "Invalid quiz structure returned", error: quizData });
+      return res
+        .status(500)
+        .json({ message: "Invalid quiz structure returned", error: quizData });
     }
 
     // Create Question documents
@@ -78,13 +85,25 @@ const generateQuiz = async (req, res) => {
       questions: questionIds,
     });
 
-    return res.status(201).json({ message: "Quiz generated successfully", quiz: newQuiz });
+    // cache
+    const cacheKey = `${quizData.subject}_${quizData.difficulty}_${quizData.grade}`;
+    let cachedQuiz = questionCache.get(cacheKey);
+    if (cachedQuiz) {
+      console.log("Using cached quiz questions");
+      return cachedQuiz; // Return the cached questions
+    }
+    questionCache.set(cacheKey, newQuiz);
+
+    return res
+      .status(201)
+      .json({ message: "Quiz generated successfully", quiz: newQuiz });
   } catch (error) {
     console.error("Error generating quiz:", error);
-    return res.status(500).json({ message: "Failed to generate quiz", error: error.message });
+    return res
+      .status(500)
+      .json({ message: "Failed to generate quiz", error: error.message });
   }
 };
-
 
 // Submit quiz responses and calculate score
 const submitQuiz = async (req, res) => {
@@ -114,21 +133,21 @@ const submitQuiz = async (req, res) => {
       finalScore: totalScore,
     });
 
-    return res.status(200).json({ message: "Quiz submitted successfully", submission });
+    return res
+      .status(200)
+      .json({ message: "Quiz submitted successfully", submission });
   } catch (error) {
     console.error("Error submitting quiz:", error);
     return res.status(500).json({ message: "Failed to submit quiz", error });
   }
 };
 
-
-
 // Fetch a specific quiz by ID
 const getQuizById = async (req, res) => {
   const quizId = req.params.id;
 
   try {
-    const quiz = await Quiz.findById(quizId).populate('questions');
+    const quiz = await Quiz.findById(quizId).populate("questions");
     if (!quiz) {
       return res.status(404).json({ message: "Quiz not found" });
     }
@@ -139,7 +158,6 @@ const getQuizById = async (req, res) => {
     return res.status(500).json({ message: "Failed to fetch quiz", error });
   }
 };
-
 
 // Get hint for a specific question in a quiz
 const getHintForQuestion = async (req, res) => {

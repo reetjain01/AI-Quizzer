@@ -12,7 +12,7 @@ app.use(cors());
 
 connectDB();
 
-//user routes
+// user routes
 app.use("/user", userRouter);
 
 //Quiz routes

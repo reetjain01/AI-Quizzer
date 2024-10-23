@@ -12,11 +12,7 @@ Welcome to the PlayPower Lab Backend Task repository. This project implements a 
   - [Environment Variables](#environment-variables)
   - [Running the Application](#running-the-application)
 - [API Endpoints](#api-endpoints)
-- [Testing](#testing)
-- [Deployment](#deployment)
-- [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -54,7 +50,7 @@ Welcome to the PlayPower Lab Backend Task repository. This project implements a 
 2. Install dependencies:
 
    ```bash
-   cd backend-task
+   cd backend
    npm install
    ```
 
@@ -100,26 +96,8 @@ nodemon server.js
 
 - **POST /api/user/mail**: Send quiz suggestions and scores to the user via email.
 
-## Testing
-
-To test the application, use tools like Postman or write unit tests using frameworks like Jest and Supertest.
-
-## Deployment
-
-Deploy the application to platforms like Heroku, AWS, or Azure for production use.
-
-## Troubleshooting
-
-- Ensure all environment variables are correctly set.
-- Check server logs for detailed error messages.
-- Verify network connectivity and database access.
-
 ## Contributing
 
 Contributions are welcome! Fork the repository and submit a pull request with your changes.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---

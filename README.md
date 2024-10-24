@@ -1,6 +1,6 @@
-# PlayPower Lab Backend Task
+# AI Quizzer - Backend
 
-Welcome to the PlayPower Lab Backend Task repository. This project implements a backend solution for managing quizzes, user submissions, and email notifications using Node.js, Express.js, MongoDB, and Nodemailer.
+AI Quizzer implements a backend solution for managing quizzes, user submissions, and email notifications using Node.js, Express.js, MongoDB, and Nodemailer.
 
 ## Table of Contents
 
